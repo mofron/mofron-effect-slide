@@ -1,0 +1,23 @@
+{
+  "name": "mofron-effect-slide",
+  "version": "0.0.1",
+  "description": "slide effect module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mofron/mofron-effect-slide.git"
+  },
+  "keywords": [
+    "mofron",
+    "front-end"
+  ],
+  "author": "simparts",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mofron/mofron-effect-slide/issues"
+  },
+  "homepage": "https://github.com/mofron/mofron-effect-slide#readme"
+}

@@ -1,0 +1,7 @@
+<setting>
+    <tag load="mofron-comp-frame">Frame</tag>
+    <tag load="mofron-effect-slide">Slide</tag>
+</setting>
+
+<Frame style="left:0rem;" effect=Slide:(left,1rem)>
+</Frame>
