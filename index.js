@@ -18,12 +18,13 @@ module.exports = class extends mofron.class.Effect {
      * @short dirction,value
      * @type private
      */
-    constructor (prm) {
+    constructor (p1,p2) {
         try {
             super();
-            this.name("Position");
+            this.modname("Slide");
             this.shortForm("direction", "value");
             this.speed(300);
+            
             /* init config */
             this.confmng().add(
 	        "position",
@@ -35,10 +36,15 @@ module.exports = class extends mofron.class.Effect {
             );
 	    this.confmng().add("direction", { type: "string", select: ["top", "left", "bottom", "right"], init: "left" });
             this.confmng().add("value", { type: "size" });
-
+            
             this.beforeEvent(
                 (eff) => {
                     try {
+		        eff.transition(eff.direction());
+			let tp = {};
+			tp[eff.direction()] = this.value();
+                        eff.component().style(tp);
+                        
                         eff.component().style(
 			    { "position" : eff.position() },
 			    { passive: true }
@@ -51,8 +57,8 @@ module.exports = class extends mofron.class.Effect {
 	    );
 
             /* set config */
-	    if (undefined !== prm) {
-                this.config(prm);
+	    if (0 < arguments.length) {
+                this.config(p1,p2);
             }
         } catch (e) {
             console.error(e.stack);
@@ -70,7 +76,7 @@ module.exports = class extends mofron.class.Effect {
     contents (cmp) {
         try {
             let tp = {};
-            tp[this.direction()] = this.value();
+            tp[this.direction()] = "0rem";
             cmp.style(tp);
         } catch (e) {
             console.error(e.stack);
