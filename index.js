@@ -34,21 +34,23 @@ module.exports = class extends mofron.class.Effect {
 		    init: "relative"
 		}
             );
-	    this.confmng().add("direction", { type: "string", select: ["top", "left", "bottom", "right"], init: "left" });
+	    this.confmng().add("direction", { type: "string", select: ["top", "left", "bottom", "right"]});
+	    this.direction('left');
             this.confmng().add("value", { type: "size" });
+            this.confmng().add("initValue", { type: "size", init:"0rem" });
             
             this.beforeEvent(
                 (eff) => {
                     try {
-		        eff.transition(eff.direction());
-			let tp = {};
-			tp[eff.direction()] = this.value();
-                        eff.component().style(tp);
-                        
-                        eff.component().style(
-			    { "position" : eff.position() },
-			    { passive: true }
-			);
+                        eff.component().style({ 'position': eff.position() });
+                        let dir     = eff.direction();
+                        let set_dir = {};
+                        if (('left' === dir) || ('right' === dir)) {
+                            set_dir = { 'left':eff.initValue() };
+                        } else {
+                            set_dir = { 'top':eff.initValue() };
+                        }
+		        eff.component().style(set_dir);
 		    } catch (e) {
                         console.error(e.stack);
                         throw e;
@@ -75,9 +77,16 @@ module.exports = class extends mofron.class.Effect {
      */
     contents (cmp) {
         try {
-            let tp = {};
-            tp[this.direction()] = "0rem";
-            cmp.style(tp);
+	    let dir = this.direction();
+	    if ('left' === dir) {
+	        cmp.style({ 'left': '-'+this.value() });
+	    } else if ('right' === dir) {
+                cmp.style({ 'left': this.value() });
+            } else if ('top' === dir) {
+                cmp.style({ 'top': '-'+this.value() });
+            } else {
+                cmp.style({ 'top': this.value() });
+            }
         } catch (e) {
             console.error(e.stack);
             throw e;
@@ -112,6 +121,13 @@ module.exports = class extends mofron.class.Effect {
      */
     direction (prm) {
         try {
+	    if ('string' === typeof prm) {
+                if (('left' === prm) || ('right' === prm)) {
+                    this.transition('left');
+		} else {
+                    this.transition('top');
+		}
+	    }
             return this.confmng("direction", prm);
         } catch (e) {
             console.error(e.stack);
@@ -131,6 +147,15 @@ module.exports = class extends mofron.class.Effect {
     value (prm) {
         try {
 	    return this.confmng("value", prm);
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+
+    initValue (prm) {
+        try {
+            return this.confmng("initValue", prm);
         } catch (e) {
             console.error(e.stack);
             throw e;
